@@ -2,7 +2,7 @@ import { relations } from "drizzle-orm";
 import { boolean, integer, pgTable, serial, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 export const customers = pgTable("customers", {
-    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    id: serial("id").primaryKey(),
     first_name: varchar("first_name").notNull(),
     last_name: varchar("last_name").notNull(),
     email: varchar("email").notNull().unique(),
