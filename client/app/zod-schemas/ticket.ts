@@ -4,7 +4,7 @@ import { z } from "zod/v4";
 
 
 export const ticketInsertSchema = createInsertSchema(tickets, {
-    id: z.union([z.number(), z.literal('New')]),
+    id: z.union([z.number(), z.literal('(New)')]),
     title: (schema) => schema.min(1, 'Title is required'),
     description: (schema) => schema.min(1, 'Description is reqquired'),
     tech: (schema) =>

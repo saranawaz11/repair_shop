@@ -8,6 +8,7 @@
 import BackButton from '@/app/components/backButton';
 import { getCustomer } from '@/lib/queries/getCustomer';
 import React from 'react'
+import Customerform from './Customerform';
 
 export default async function page(
     {
@@ -35,8 +36,10 @@ export default async function page(
             }
 
             // if customer details present
+            return <Customerform customer={customer} />
         } 
         // if not customerId, then new form
+        return <Customerform />
 
     } catch (e) {
         if (e instanceof Error) {

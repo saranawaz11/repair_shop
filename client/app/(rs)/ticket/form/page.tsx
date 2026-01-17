@@ -2,6 +2,7 @@ import BackButton from '@/app/components/backButton';
 import { getCustomer } from '@/lib/queries/getCustomer';
 import { getTicket } from '@/lib/queries/getTicket';
 import React from 'react'
+import TicketForm from './TicketForm';
 
 async function page(
     {
@@ -61,7 +62,7 @@ async function page(
             console.log('Ticket: ', ticket);
             console.log('Customer: ', customer);
             
-            
+            return <TicketForm customer={customer} ticket={ticket} />
         }
 
 
