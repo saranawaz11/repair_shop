@@ -1,6 +1,6 @@
 'use client'
 import React, { InputHTMLAttributes } from 'react'
-import { FormControl, FormField, FormItem, FormLabel } from '../ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import { useFormContext } from 'react-hook-form'
 
@@ -25,6 +25,7 @@ function InputWithLabel<S>(
                     <FormControl>
                         <Input placeholder="shadcn" id={nameInSchema} {...props} {...field} className={`w-full max-w-xs ${className} disabled:text-blue-800 dark:disabled:text-green-800 disabled:opacity-75`}/>
                     </FormControl>
+                    <FormMessage />
                 </FormItem>
             )}
         />

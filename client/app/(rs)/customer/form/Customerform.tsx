@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import InputWithLabel from '@/components/inputs/inputWithLabel';
 import { Button } from '@/components/ui/button';
+import TextAreaWithLabel from '@/components/inputs/textAreaWithLabel';
 
 type Props = {
   customer?: customerSelectSchemaType;
@@ -29,6 +30,7 @@ export default function Customerform(
   }
 
   const form = useForm<customerInsertSchemaType>({
+    mode: 'onBlur',
     resolver: zodResolver(customerInsertSchema),
     defaultValues,
   })
@@ -60,6 +62,7 @@ export default function Customerform(
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Zip' nameInSchema='zip' />
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Email' nameInSchema='email' />
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Phone' nameInSchema='phone' />
+            <TextAreaWithLabel<customerInsertSchemaType> fieldTitle='Notes' nameInSchema='notes' />
 
             <div className='flex gap-2'>
               <Button className='w-3/4' variant={'outline'} title='save' type='submit'>Save</Button>
