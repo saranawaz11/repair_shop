@@ -7,6 +7,8 @@ import { Form } from '@/components/ui/form';
 import InputWithLabel from '@/components/inputs/inputWithLabel';
 import { Button } from '@/components/ui/button';
 import TextAreaWithLabel from '@/components/inputs/textAreaWithLabel';
+import { SelectWithLabel } from '@/components/inputs/selectWithLabel';
+import { countryArray } from '@/app/constants/CityArray';
 
 type Props = {
   customer?: customerSelectSchemaType;
@@ -56,7 +58,8 @@ export default function Customerform(
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Last Name' nameInSchema='last_name' />
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Address1' nameInSchema='address1' />
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Address2' nameInSchema='address2' />
-            <InputWithLabel<customerInsertSchemaType> fieldTitle='City' nameInSchema='city' />
+            {/* <InputWithLabel<customerInsertSchemaType> fieldTitle='City' nameInSchema='city' /> */}
+            <SelectWithLabel<customerInsertSchemaType> fieldTitle='City' nameInSchema='city' data={countryArray} />
           </div>
           <div className='flex flex-col gap-4 w-full max-w-xs'>
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Zip' nameInSchema='zip' />
