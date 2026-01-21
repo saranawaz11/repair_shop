@@ -4,10 +4,18 @@ import React from 'react'
 import NavButton from './navButton'
 import Link from 'next/link'
 import { ModeToggle } from './mode-toggle'
-import { SignOutButton } from '@clerk/nextjs'
+import { SignOutButton, useClerk } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 
 
 function Header() {
+    const { signOut } = useClerk()
+    const router = useRouter()
+
+    const handleSignOut = async () => {
+        await signOut()
+        router.push('/sign-in')
+    }
 
     return (
         <header className='max-w-6xl mx-auto shadow-xl/20 sticky top-0 z-999 '>
@@ -19,11 +27,15 @@ function Header() {
                 <div className='flex justify-center items-center gap-2'>
                     <NavButton label="Tickets" href="/ticket" icon={File} />
                     <NavButton label="Customers" href="/customer" icon={UsersRound} />
-                    <SignOutButton redirectUrl="/sign-in">
-                        <span className="cursor-pointer">
-                            <LogOut />
-                        </span>
-                    </SignOutButton>
+                    <button
+                        type="button"
+                        onClick={handleSignOut}
+                        className="cursor-pointer"
+                        aria-label="Sign out"
+                    >
+                        <LogOut />
+                    </button>
+
                     <ModeToggle />
                 </div>
             </div>

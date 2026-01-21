@@ -9,6 +9,10 @@ import { Button } from '@/components/ui/button';
 import TextAreaWithLabel from '@/components/inputs/textAreaWithLabel';
 import { SelectWithLabel } from '@/components/inputs/selectWithLabel';
 import { countryArray } from '@/app/constants/CityArray';
+import { useUser } from '@clerk/nextjs';
+import CheckboxWithLabel from '@/components/inputs/checkboxWithLabel';
+
+
 
 type Props = {
   customer?: customerSelectSchemaType;
@@ -17,6 +21,9 @@ type Props = {
 export default function Customerform(
   { customer }: Props
 ) {
+
+  const { user, isLoaded } = useUser()
+  const isManager = isLoaded && user?.publicMetadata?.role === 'manager';
 
   const defaultValues: customerInsertSchemaType = {
     id: customer?.id || 0,
@@ -29,6 +36,7 @@ export default function Customerform(
     email: customer?.email || '',
     phone: customer?.phone || '',
     notes: customer?.notes || '',
+    active: customer?.active || true
   }
 
   const form = useForm<customerInsertSchemaType>({
@@ -46,8 +54,14 @@ export default function Customerform(
     <div className='pt-10 w-[80%] mx-auto'>
       <div className='text-start'>
         <h2 className='text-2xl font-bold'>
-          {customer?.id ? "Edit" : 'New'} customer form
+          {customer?.id ? "Edit" : 'New'} Customer {customer?.id ? `#${customer.id}` : 'Form'}
         </h2>
+        {isManager && (
+          <p className="text-sm text-muted-foreground">
+            You are logged in as a manager
+          </p>
+        )}
+
       </div>
 
       <Form {...form}>
@@ -65,7 +79,10 @@ export default function Customerform(
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Zip' nameInSchema='zip' />
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Email' nameInSchema='email' />
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Phone' nameInSchema='phone' />
-            <TextAreaWithLabel<customerInsertSchemaType> fieldTitle='Notes' nameInSchema='notes' />
+            <TextAreaWithLabel<customerInsertSchemaType> fieldTitle='Notes' nameInSchema='notes' className='h-36' />
+            {isManager ? (
+              <CheckboxWithLabel<customerInsertSchemaType> fieldTitle='Active' nameInSchema={'active'} message='Yes' />
+            ) : null}
 
             <div className='flex gap-2'>
               <Button className='w-3/4' variant={'outline'} title='save' type='submit'>Save</Button>

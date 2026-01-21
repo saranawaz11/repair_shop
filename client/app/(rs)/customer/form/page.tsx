@@ -10,6 +10,17 @@ import { getCustomer } from '@/lib/queries/getCustomer';
 import React from 'react'
 import Customerform from './Customerform';
 
+export async function generateMetadata(
+    {
+        searchParams,
+    }: {
+        searchParams: Promise<{ [key: string]: string | undefined }>
+    }) {
+    const { customerId } = await searchParams
+    if (!customerId) return { title: 'New Customer' }
+    return { title: 'Edit Customer' }
+}
+
 export default async function page(
     {
         searchParams,

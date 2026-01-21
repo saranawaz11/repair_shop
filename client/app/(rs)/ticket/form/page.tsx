@@ -3,6 +3,7 @@ import { getCustomer } from '@/lib/queries/getCustomer';
 import { getTicket } from '@/lib/queries/getTicket';
 import React from 'react'
 import TicketForm from './TicketForm';
+import { clerkClient, currentUser } from '@clerk/nextjs/server';
 
 async function page(
     {
@@ -11,8 +12,11 @@ async function page(
         searchParams: Promise<{ [key: string]: string | undefined }>
     }
 ) {
-
     try {
+        const user = await currentUser()
+        const isManager = user?.publicMetadata?.role === 'manager'
+
+
         const { ticketId, customerId } = await searchParams;
 
         if (!ticketId && !customerId) {
@@ -43,6 +47,25 @@ async function page(
                     </div>
                 )
             }
+            // console.log('User is:', JSON.stringify(user, null, 2));
+
+            if (isManager) {
+                const clerk = await clerkClient()
+                const { data: users } = await clerk.users.getUserList()
+
+                const techs = users.map(user => ({
+                    id: user.emailAddresses[0]?.emailAddress ?? user.id,
+                    description: user.emailAddresses[0]?.emailAddress ?? 'No email',
+                }))
+
+                return (
+                    <TicketForm
+                        customer={customer}
+                        techs={techs}
+                    // isManager={isManager}
+                    />
+                )
+            }
         }
 
         if (ticketId) {
@@ -61,8 +84,24 @@ async function page(
             // get details
             console.log('Ticket: ', ticket);
             console.log('Customer: ', customer);
-            
-            return <TicketForm customer={customer} ticket={ticket} />
+
+            if (isManager) {
+                const clerk = await clerkClient()
+                const { data: users } = await clerk.users.getUserList()
+
+                const techs = users.map(user => ({
+                    id: user.emailAddresses[0]?.emailAddress ?? user.id,
+                    description: user.emailAddresses[0]?.emailAddress ?? 'No email',
+                }))
+
+                return <TicketForm customer={customer} ticket={ticket} techs={techs}
+                />
+
+            }
+            else {
+                return <TicketForm customer={customer} ticket={ticket} />
+            }
+
         }
 
 
@@ -71,10 +110,6 @@ async function page(
             throw e;
         }
     }
-
-    return (
-        <div>page</div>
-    )
 }
 
 export default page
