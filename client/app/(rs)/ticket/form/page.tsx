@@ -99,7 +99,8 @@ async function page(
 
             }
             else {
-                return <TicketForm customer={customer} ticket={ticket} />
+                const isEditable = user?.emailAddresses[0].emailAddress.toLowerCase() === ticket.tech.toLowerCase()
+                return <TicketForm customer={customer} ticket={ticket} isEditable={isEditable} />
             }
 
         }

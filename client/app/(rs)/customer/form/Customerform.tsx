@@ -80,7 +80,7 @@ export default function Customerform(
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Email' nameInSchema='email' />
             <InputWithLabel<customerInsertSchemaType> fieldTitle='Phone' nameInSchema='phone' />
             <TextAreaWithLabel<customerInsertSchemaType> fieldTitle='Notes' nameInSchema='notes' className='h-36' />
-            {isManager ? (
+            {isManager && customer?.id ? (
               <CheckboxWithLabel<customerInsertSchemaType> fieldTitle='Active' nameInSchema={'active'} message='Yes' />
             ) : null}
 

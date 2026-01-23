@@ -24,7 +24,7 @@ type Props = {
 }
 
 function TicketForm(
-    { customer, ticket, techs }: Props
+    { customer, ticket, techs, isEditable = true }: Props
 ) {
 
     const isManager = Array.isArray(techs)
@@ -49,7 +49,7 @@ function TicketForm(
     return (
         <div className='pt-10 w-[80%] mx-auto'>
             <div>
-                <h2>{ticket?.id ? 'Edit' : 'New'} Ticket {ticket?.id ? `# ${ticket.id}` : 'Form'}</h2>
+                <h2>{ticket?.id && isEditable ? `Edit ticket #${ticket.id}` : ticket?.id ? `View ticket #${ticket.id}` : 'New Ticket Form'} Ticket {ticket?.id ? `# ${ticket.id}` : 'Form'}</h2>
             </div>
             <Form {...form}>
 
@@ -62,6 +62,9 @@ function TicketForm(
                             <InputWithLabel<ticketInsertSchemaType> fieldTitle='Tech' nameInSchema='tech' disabled={true} />
 
                         )}
+                        {ticket?.id ? (
+                            <CheckboxWithLabel<ticketInsertSchemaType> fieldTitle="Completed" nameInSchema="completed" message="Yes" disabled={!isEditable} />
+                        ) : null}
                         <CheckboxWithLabel nameInSchema={'completed'} fieldTitle="Completed" message="Yes" />
                         <div>
                             <h2>Customer Info</h2>
@@ -76,11 +79,14 @@ function TicketForm(
                     </div>
 
                     <div className="flex flex-col gap-4 w-full max-w-xs">
-                        <TextAreaWithLabel fieldTitle="Description" nameInSchema={'description'} className="h-96" />
-                        <div className='flex gap-2'>
-                            <Button className='w-3/4' variant={'outline'} title='save' type='submit'>Save</Button>
-                            <Button variant={'outline'} title='Reset' type='button' onClick={() => form.reset(defaultValues)}>Reset</Button>
-                        </div>
+                        <TextAreaWithLabel fieldTitle="Description" nameInSchema={'description'} className="h-96" disabled={!isEditable} />
+                        {!isEditable ? (
+                            <div className='flex gap-2'>
+                                <Button className='w-3/4' variant={'outline'} title='save' type='submit'>Save</Button>
+                                <Button variant={'outline'} title='Reset' type='button' onClick={() => form.reset(defaultValues)}>Reset</Button>
+                            </div>
+                        ) : null}
+
                     </div>
                     {/* <p>{JSON.stringify(form.getValues())}</p> */}
                 </form>
