@@ -11,6 +11,11 @@ import { SelectWithLabel } from '@/components/inputs/selectWithLabel';
 import { countryArray } from '@/app/constants/CityArray';
 import { useUser } from '@clerk/nextjs';
 import CheckboxWithLabel from '@/components/inputs/checkboxWithLabel';
+import { saveCustomerAction } from '@/app/actions/saveCustomerAction';
+import { useAction } from "next-safe-action/hooks";
+import { toast } from 'sonner';
+import { LoaderCircle } from 'lucide-react';
+import { DisplayServerActionResponse } from '@/app/components/displayServerActionResponse';
 
 
 
@@ -45,6 +50,26 @@ export default function Customerform(
     defaultValues,
   })
 
+  const { execute, result, isExecuting, reset } = useAction(saveCustomerAction, {
+    onSuccess: ({ data }) => {
+      //toast user 
+      toast(data?.message || 'information saved successfully', {
+        description: 'Success',
+        duration: 5000,
+      })
+    },
+    onError: ({ error }) => {
+      //toast user 
+      toast('Saved failed', {
+        description: 'Error',
+        duration: 5000,
+      })
+    },
+
+  }
+  );
+
+
   async function onSubmit(data: customerInsertSchemaType) {
     console.log(data);
   }
@@ -52,6 +77,7 @@ export default function Customerform(
 
   return (
     <div className='pt-10 w-[80%] mx-auto'>
+      <DisplayServerActionResponse result={result} />
       <div className='text-start'>
         <h2 className='text-2xl font-bold'>
           {customer?.id ? "Edit" : 'New'} Customer {customer?.id ? `#${customer.id}` : 'Form'}
@@ -85,8 +111,13 @@ export default function Customerform(
             ) : null}
 
             <div className='flex gap-2'>
-              <Button className='w-3/4' variant={'outline'} title='save' type='submit'>Save</Button>
-              <Button variant={'outline'} title='Reset' type='button' onClick={() => form.reset(defaultValues)}>Reset</Button>
+              <Button className='w-3/4' variant={'outline'} title='save' type='submit' disabled={isExecuting}>{isExecuting ? (
+                <><LoaderCircle className='animate-spin' />Saving</>
+              ) : 'Save'}</Button>
+              <Button variant={'outline'} title='Reset' type='button' onClick={() => {
+                form.reset(defaultValues)
+                reset()
+              }}>Reset</Button>
             </div>
           </div>
           {/* <p>{JSON.stringify(form.getValues())}</p> */}
