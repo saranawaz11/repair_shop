@@ -12,8 +12,10 @@ export const actionClient = createSafeActionClient({
     // Can also be an async function.
     handleServerError(e, utils) {
         // You can access these properties inside the `utils` object.
+        console.log('Error od database:- ', e.constructor.name);
         const { clientInput, metadata } = utils;
         Sentry.captureException(e, (scope) => {
+
             scope.clear()
             scope.setContext('serverError', {message: e.message})
             scope.setContext('metadata', {actionName: metadata?.actionName})
@@ -21,7 +23,7 @@ export const actionClient = createSafeActionClient({
             return scope
         })
         console.error("Action error:", e.message);
-        if(e.constructor.name === 'DatabaseError'){
+        if (e.constructor.name === 'DrizzleQueryError') {
             return 'Database eroor. data is not saved.'
         }
         return DEFAULT_SERVER_ERROR_MESSAGE;

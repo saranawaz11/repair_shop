@@ -1,4 +1,3 @@
-import { FC } from "react";
 type Props = {
     result: {
         data?: {

@@ -53,15 +53,37 @@ export default function Customerform(
   const { execute, result, isExecuting, reset } = useAction(saveCustomerAction, {
     onSuccess: ({ data }) => {
       //toast user 
-      toast(data?.message || 'information saved successfully', {
+      toast.success(data?.message || 'information saved successfully', {
         description: 'Success',
         duration: 5000,
       })
+
+      // Reset form to empty if it's a new customer (id is 0)
+      // Delay reset to allow DisplayServerActionResponse to be visible for 5 seconds
+      setTimeout(() => {
+        if (!customer?.id || customer.id === 0) {
+          form.reset({
+            id: 0,
+            first_name: '',
+            last_name: '',
+            address1: '',
+            address2: '',
+            city: '',
+            zip: '',
+            email: '',
+            phone: '',
+            notes: '',
+            active: true
+          })
+        }
+        // Reset the action result after message has been displayed
+        reset()
+      }, 5000)
     },
     onError: ({ error }) => {
       //toast user 
-      toast('Saved failed', {
-        description: 'Error',
+      toast.error('Save failed', {
+        description: error?.serverError || 'An error occurred',
         duration: 5000,
       })
     },
@@ -71,7 +93,7 @@ export default function Customerform(
 
 
   async function onSubmit(data: customerInsertSchemaType) {
-    console.log(data);
+    execute(data);
   }
 
 

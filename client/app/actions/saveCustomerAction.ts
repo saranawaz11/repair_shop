@@ -4,7 +4,7 @@ import { actionClient } from "@/lib/safe-action";
 import { customerInsertSchema, type customerInsertSchemaType} from "@/app/zod-schemas/customer";
 import db from "@/app/db";
 import { customers } from "@/app/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { flattenValidationErrors } from "next-safe-action";
 import { auth } from "@clerk/nextjs/server";
 
@@ -19,6 +19,12 @@ export const saveCustomerAction = actionClient
             redirectToSignIn();
             return;
         }
+        //throwing error on purpose to check error message
+        // throw Error('Test error')
+
+        // test database error
+        // const query = sql.raw('SELECT * FROM Sara')
+        // const newData = await db.execute(query)
         // Extract id and prepare data for insert/update
         const { id, ...data } = customer;
 
