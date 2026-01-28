@@ -130,20 +130,37 @@ function TicketForm(
 
                     <div className="flex flex-col gap-4 w-full max-w-xs">
                         <TextAreaWithLabel fieldTitle="Description" nameInSchema={'description'} className="h-96" disabled={!isEditable} />
-                        {!isEditable ? (
-                            <div className='flex gap-2'>
-                                <Button className='w-3/4' variant={'outline'} title='save' type='submit' disabled={isExecuting}>
-                                    {isExecuting ? (
-                                        <><LoaderCircle className='animate-spin' />Saving</>
-                                    ) : 'Save'}
-                                </Button>
-                                <Button variant={'outline'} title='Reset' type='button' onClick={() => {
-                                    form.reset(defaultValues)
-                                    reset()
-                                }
-                                }>Reset</Button>
-                            </div>
-                        ) : null}
+                        {isEditable && (
+  <div className='flex gap-2'>
+    <Button
+      className='w-3/4'
+      variant='outline'
+      type='submit'
+      disabled={isExecuting}
+    >
+      {isExecuting ? (
+        <>
+          <LoaderCircle className='animate-spin' />
+          Saving
+        </>
+      ) : (
+        'Save'
+      )}
+    </Button>
+
+    <Button
+      variant='outline'
+      type='button'
+      onClick={() => {
+        form.reset(defaultValues)
+        reset()
+      }}
+    >
+      Reset
+    </Button>
+  </div>
+)}
+
 
                     </div>
                     {/* <p>{JSON.stringify(form.getValues())}</p> */}
