@@ -9,7 +9,7 @@ function SearchButton() {
 
   return (
     <div>
-        <Button disabled={status.pending} type='button' className='w-25'>
+      <Button disabled={status.pending} type='submit' className='w-25'>
             {status.pending ? (
                 <LoaderCircle className='animate-spin'/>
             ) : 'Search'}

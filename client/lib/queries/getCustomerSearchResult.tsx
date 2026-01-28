@@ -1,7 +1,6 @@
 import db from '@/app/db'
 import { customers } from '@/app/db/schema'
 import { ilike, or } from 'drizzle-orm'
-import React from 'react'
 
 export default async function getCustomerSearchResult(searchText: string) {
 
