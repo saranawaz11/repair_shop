@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ModeToggle } from './mode-toggle'
 import { SignOutButton, useClerk } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
+import NavButtonMenu from './navButtonMenu'
 
 
 function Header() {
@@ -26,7 +27,17 @@ function Header() {
                 </div>
                 <div className='flex justify-center items-center gap-2'>
                     <NavButton label="Tickets" href="/ticket" icon={File} />
-                    <NavButton label="Customers" href="/customer" icon={UsersRound} />
+                    <NavButtonMenu icon={UsersRound} label='Customers Menu' choices={[
+                        {
+                            title: 'Search Customers',
+                            href: '/customer'
+                        },
+                        {
+                            title: 'New Customer',
+                            href: '/customer/form'
+                        }
+                    ]} />
+                    {/* <NavButton label="Customers" href="/customer" icon={UsersRound} /> */}
                     <button
                         type="button"
                         onClick={handleSignOut}
