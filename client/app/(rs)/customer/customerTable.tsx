@@ -28,7 +28,7 @@ export default function CustomerTable({ data }: Props) {
             columnHelper.accessor(columnName, {
                 id: columnName,
                 header: columnName[0].toUpperCase() + columnName.slice(1),
-                cell: info => info.getValue(),   // 👈 THIS
+                cell: info => info.getValue(), 
             })
         );
     }, []);

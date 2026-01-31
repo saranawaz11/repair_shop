@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import TicketSearch from './ticketSearch';
 import getOpenTickets from '@/lib/queries/getOpenTickets';
 import getTicketSeaarchResult from '@/lib/queries/getTicketSeaarchResult';
+import TicketTabel from './ticketTabel';
 
 export const metadata: Metadata = {
   title: 'Ticket',
@@ -21,7 +22,8 @@ export default async function TicketPage(
     return (
       <>
         <TicketSearch />
-        <p>{JSON.stringify(result)}</p>
+        {/* <p>{JSON.stringify(result)}</p> */}
+        <TicketTabel data={result} />
       </>
     )
   }
@@ -30,7 +32,8 @@ export default async function TicketPage(
   return (
     <div>
       <TicketSearch />
-      <p>{JSON.stringify(result)}</p>
+      {/* <p>{JSON.stringify(result)}</p> */}
+      <TicketTabel data={result} />
     </div>
   )
 }

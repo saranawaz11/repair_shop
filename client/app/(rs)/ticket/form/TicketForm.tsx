@@ -39,7 +39,7 @@ function TicketForm(
         title: ticket?.title ?? '',
         description: ticket?.description ?? '',
         completed: ticket?.completed ?? false,
-        tech: ticket?.tech ?? 'example@gmail.com'
+        tech: ticket?.tech.toLowerCase() ?? 'example@gmail.com'
     }
     const form = useForm<ticketInsertSchemaType>({
         mode: 'onBlur',
