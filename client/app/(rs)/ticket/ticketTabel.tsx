@@ -1,12 +1,12 @@
 'use client'
 'use no memo'
 import React, { useMemo, useState } from 'react'
-import { createColumnHelper, useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, ColumnFiltersState, getFacetedUniqueValues, getFilteredRowModel } from '@tanstack/react-table';
+import { createColumnHelper, useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, ColumnFiltersState, getFacetedUniqueValues, getFilteredRowModel, SortingState, getSortedRowModel } from '@tanstack/react-table';
 import { customerSelectSchemaType } from '@/app/zod-schemas/customer'
 import { useRouter } from 'next/navigation'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { TicketSearchResultsType } from '@/lib/queries/getTicketSeaarchResult';
-import { CircleCheckIcon, CircleXIcon } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpDown, CircleCheckIcon, CircleXIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Filter from '@/app/components/react-table/filter';
 
@@ -30,6 +30,12 @@ const columnHelper = createColumnHelper<RowType>();
 export default function TicketTabel({ data }: Props) {
     const router = useRouter();
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [sorting, setSorting] = useState<SortingState>([
+        {
+            id: 'ticketDate',
+            desc: false
+        }
+    ])
 
     const columns = useMemo(() => {
         return columnHeadersArray.map((columnName) =>
@@ -48,7 +54,24 @@ export default function TicketTabel({ data }: Props) {
                 return value
             }, {
                 id: columnName,
-                header: columnName[0].toUpperCase() + columnName.slice(1),
+                header: ({ column }) => {
+                    return (
+                        <Button variant={'ghost'} className='p-1 w-full flex justify-between' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                            {columnName[0].toUpperCase() + columnName.slice(1)}
+
+                            {column.getIsSorted() === 'asc' && (
+                                <ArrowUp className='ml-2 h-4 w-4' />
+                            )}
+
+                            {column.getIsSorted() === 'desc' && (
+                                <ArrowDown className='ml-2 h-4 w-4' />
+                            )}
+                            {column.getIsSorted() !== 'desc' && column.getIsSorted() !== 'asc' && (
+                                <ArrowUpDown className='ml-2 h-4 w-4' />
+                            )}
+                        </Button>
+                    )
+                },
                 cell: ({ getValue}) => {
                     const value = getValue()
                     if(columnName === 'completed'){
@@ -70,6 +93,7 @@ export default function TicketTabel({ data }: Props) {
         columns,
         state: {
             columnFilters,
+            sorting,
         },
         initialState: {
             pagination: {
@@ -77,11 +101,14 @@ export default function TicketTabel({ data }: Props) {
             }
         },
         onColumnFiltersChange: setColumnFilters,
+        onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(), 
         getPaginationRowModel: getPaginationRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getFacetedUniqueValues: getFacetedUniqueValues(),
+        getSortedRowModel: getSortedRowModel(),
     });
+
 
     console.log('table data:', data, Array.isArray(data));
 
@@ -145,6 +172,9 @@ export default function TicketTabel({ data }: Props) {
                     </p>
                 </div>
                 <div className="space-x-1">
+                    <Button variant={'outline'} onClick={() => table.resetSorting()}>
+                        Reset Sorting
+                    </Button>
                     <Button variant={'outline'} onClick={() => table.resetColumnFilters()}>
                         Reset Filters
                     </Button>
