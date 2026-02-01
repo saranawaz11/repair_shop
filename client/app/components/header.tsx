@@ -22,8 +22,8 @@ function Header() {
         <header className='max-w-6xl mx-auto shadow-xl/20 sticky top-0 z-999 '>
             <div className='flex items-center justify-between h-20 mx-4'>
                 <div className='flex gap-3 items-center justify-center'>
-                    <NavButton label="Home" href="/home" icon={HomeIcon} />
-                    <Link href='/' className='text-2xl'>Computer&apos;s Repair Shop</Link>
+                    <NavButton label="Home" href="/ticket" icon={HomeIcon} />
+                    <Link href='/ticket' className='text-2xl'>Computer&apos;s Repair Shop</Link>
                 </div>
                 <div className='flex justify-center items-center gap-2'>
                     <NavButton label="Tickets" href="/ticket" icon={File} />
