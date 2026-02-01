@@ -16,6 +16,6 @@ export default async function getCustomerSearchResult(searchText: string) {
         ilike(customers.address2, `%${searchText}%`),
         ilike(customers.notes, `%${searchText}%`),
         sql`lower(concat(${customers.first_name}, ' ', ${customers.last_name})) LIKE ${`%${searchText.toLowerCase().replace(' ', '%')}%`}`,
-    ));
+        )).orderBy(customers.first_name)
     return result
 }

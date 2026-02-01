@@ -54,15 +54,15 @@ async function page(
                 const { data: users } = await clerk.users.getUserList()
 
                 const techs = users.map(user => ({
-                    id: user.emailAddresses[0]?.emailAddress ?? user.id,
-                    description: user.emailAddresses[0]?.emailAddress ?? 'No email',
+                    id: user.emailAddresses[0]?.emailAddress?.toLowerCase() ?? user.id,
+                    description: user.emailAddresses?.[0]?.emailAddress?.toLowerCase() ?? 'no email',
                 }))
 
                 return (
                     <TicketForm
                         customer={customer}
                         techs={techs}
-                    // isManager={isManager}
+                        isManager={isManager}
                     />
                 )
             }
@@ -94,7 +94,7 @@ async function page(
                     description: user.emailAddresses[0]?.emailAddress ?? 'No email',
                 }))
 
-                return <TicketForm customer={customer} ticket={ticket} techs={techs}
+                return <TicketForm customer={customer} ticket={ticket} techs={techs} isManager={isManager}
                 />
 
             }

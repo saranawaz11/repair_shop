@@ -26,13 +26,14 @@ type Props = {
         description: string,
     }[],
     isEditable?: boolean,
+    isManager?: boolean | undefined,
 }
 
 function TicketForm(
-    { customer, ticket, techs, isEditable = true }: Props
+    { customer, ticket, techs, isEditable = true, isManager = false }: Props
 ) {
 
-    const isManager = Array.isArray(techs)
+    // const isManager = Array.isArray(techs)
     const defaultValues: ticketInsertSchemaType = {
         id: ticket?.id ?? "(New)",
         customerId: ticket?.customerId ?? customer.id,
@@ -106,7 +107,7 @@ function TicketForm(
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-10 p-4'">
                     <div className='flex flex-col gap-4 w-full max-w-xs'>
                         <InputWithLabel<ticketInsertSchemaType> fieldTitle='Title' nameInSchema='title' />
-                        {isManager ? (
+                        {isManager && techs ? (
                             <SelectWithLabel<ticketInsertSchemaType> fieldTitle="Tech ID" nameInSchema="tech" data={[{ id: 'mmmexample@gmail.com', description: 'example@gmail.com' }, ...techs]} />
                         ) : (
                             <InputWithLabel<ticketInsertSchemaType> fieldTitle='Tech' nameInSchema='tech' disabled={true} />
@@ -131,37 +132,35 @@ function TicketForm(
                     <div className="flex flex-col gap-4 w-full max-w-xs">
                         <TextAreaWithLabel fieldTitle="Description" nameInSchema={'description'} className="h-96" disabled={!isEditable} />
                         {isEditable && (
-  <div className='flex gap-2'>
-    <Button
-      className='w-3/4'
-      variant='outline'
-      type='submit'
-      disabled={isExecuting}
-    >
-      {isExecuting ? (
-        <>
-          <LoaderCircle className='animate-spin' />
-          Saving
-        </>
-      ) : (
-        'Save'
-      )}
-    </Button>
+                            <div className='flex gap-2'>
+                                <Button
+                                    className='w-3/4'
+                                    variant='outline'
+                                    type='submit'
+                                    disabled={isExecuting}
+                                >
+                                    {isExecuting ? (
+                                        <>
+                                            <LoaderCircle className='animate-spin' />
+                                            Saving
+                                        </>
+                                    ) : (
+                                        'Save'
+                                    )}
+                                </Button>
 
-    <Button
-      variant='outline'
-      type='button'
-      onClick={() => {
-        form.reset(defaultValues)
-        reset()
-      }}
-    >
-      Reset
-    </Button>
-  </div>
-)}
-
-
+                                <Button
+                                    variant='outline'
+                                    type='button'
+                                    onClick={() => {
+                                        form.reset(defaultValues)
+                                        reset()
+                                    }}
+                                >
+                                    Reset
+                                </Button>
+                            </div>
+                        )}
                     </div>
                     {/* <p>{JSON.stringify(form.getValues())}</p> */}
                 </form>

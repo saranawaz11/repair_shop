@@ -9,6 +9,7 @@ import BackButton from '@/app/components/backButton';
 import { getCustomer } from '@/lib/queries/getCustomer';
 import React from 'react'
 import Customerform from './Customerform';
+import { currentUser } from '@clerk/nextjs/server';
 
 export async function generateMetadata(
     {
@@ -16,6 +17,8 @@ export async function generateMetadata(
     }: {
         searchParams: Promise<{ [key: string]: string | undefined }>
     }) {
+
+
     const { customerId } = await searchParams
     if (!customerId) return { title: 'New Customer' }
     return { title: 'Edit Customer' }
@@ -30,6 +33,8 @@ export default async function page(
 
     try {
         const { customerId } = await searchParams;
+        const user = await currentUser()
+        const isManager = user?.publicMetadata?.role === 'manager'
         console.log( `customer id is:- ${customerId}` );
 
         if(customerId){
@@ -47,10 +52,10 @@ export default async function page(
             }
 
             // if customer details present
-            return <Customerform customer={customer} />
+            return <Customerform isManager={isManager} customer={customer} />
         } 
         // if not customerId, then new form
-        return <Customerform />
+        return <Customerform isManager={isManager} />
 
     } catch (e) {
         if (e instanceof Error) {

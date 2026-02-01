@@ -23,7 +23,7 @@ export default function Filter<T>({ column, filteredRows }: Props<T>) {
             type="text"
             value={(columnFilterValue ?? '') as string}
             onChange={value => column.setFilterValue(value)}
-            placeholder={`Search... (${[...column.getFacetedUniqueValues()].filter(arr => arr[0]).length})`}
+                placeholder={`Search... (${uniqueFilteredValues.size})`}
             className="w-full border shadow rounded bg-card"
             list={column.id + 'list'}
         />

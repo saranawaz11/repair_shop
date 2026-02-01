@@ -1,6 +1,6 @@
 'use client'
 import { customerInsertSchema, customerInsertSchemaType, customerSelectSchemaType } from '@/app/zod-schemas/customer'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
@@ -16,21 +16,40 @@ import { useAction } from "next-safe-action/hooks";
 import { toast } from 'sonner';
 import { LoaderCircle } from 'lucide-react';
 import { DisplayServerActionResponse } from '@/app/components/displayServerActionResponse';
+import { useSearchParams } from 'next/navigation';
 
 
 
 type Props = {
-  customer?: customerSelectSchemaType;
+  customer?: customerSelectSchemaType,
+  isManager?: boolean | undefined
 }
 
 export default function Customerform(
-  { customer }: Props
+  { customer, isManager = false }: Props
 ) {
 
-  const { user, isLoaded } = useUser()
-  const isManager = isLoaded && user?.publicMetadata?.role === 'manager';
+  // const { user, isLoaded } = useUser()
+  // const isManager = isLoaded && user?.publicMetadata?.role === 'manager';
 
-  const defaultValues: customerInsertSchemaType = {
+  const searchParams = useSearchParams()
+  const hasCustomerId = searchParams.has('customerId');
+
+  const emptyValues: customerInsertSchemaType = {
+    id: 0,
+    first_name: '',
+    last_name: '',
+    address1: '',
+    address2: '',
+    city: '',
+    zip: '',
+    email: '',
+    phone: '',
+    notes: '',
+    active: true
+  }
+
+  const defaultValues: customerInsertSchemaType = hasCustomerId ? {
     id: customer?.id || 0,
     first_name: customer?.first_name || '',
     last_name: customer?.last_name || '',
@@ -42,13 +61,17 @@ export default function Customerform(
     phone: customer?.phone || '',
     notes: customer?.notes || '',
     active: customer?.active || true
-  }
+  } : emptyValues
 
   const form = useForm<customerInsertSchemaType>({
     mode: 'onBlur',
     resolver: zodResolver(customerInsertSchema),
     defaultValues,
   })
+
+  useEffect(() => {
+    form.reset(hasCustomerId ? defaultValues : emptyValues)
+  }, [searchParams.get('customerId')]) //eslint-disable-line react-hooks/exhaustive-deps
 
   const { execute, result, isExecuting, reset } = useAction(saveCustomerAction, {
     onSuccess: ({ data }) => {
