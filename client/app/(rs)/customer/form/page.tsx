@@ -52,10 +52,10 @@ export default async function page(
             }
 
             // if customer details present
-            return <Customerform isManager={isManager} customer={customer} />
+            return <Customerform key={customerId} isManager={isManager} customer={customer} />
         } 
         // if not customerId, then new form
-        return <Customerform isManager={isManager} />
+        return <Customerform key='new' isManager={isManager} />
 
     } catch (e) {
         if (e instanceof Error) {

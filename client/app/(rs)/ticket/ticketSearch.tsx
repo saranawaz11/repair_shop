@@ -6,7 +6,7 @@ import SearchButton from '@/app/components/searchButton'
 export default function TicketSearch() {
   return (
     <Form action={'/ticket'} className='flex gap-2'>
-          <Input placeholder='Search ticket...' name='searchText' type='text' />
+      <Input placeholder='Search ticket...' name='searchText' type='text' autoFocus />
         <SearchButton/>
     </Form>
   )

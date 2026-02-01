@@ -6,7 +6,7 @@ import SearchButton from '@/app/components/searchButton'
 export default function CustomerSearch() {
   return (
     <Form action={'/customer'} className='flex gap-2'>
-          <Input placeholder='Search customer...' name='searchText' type='text' />
+      <Input placeholder='Search customer...' name='searchText' type='text' autoFocus />
         <SearchButton/>
     </Form>
   )

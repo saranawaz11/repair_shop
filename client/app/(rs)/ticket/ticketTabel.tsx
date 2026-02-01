@@ -1,6 +1,6 @@
 'use client'
 'use no memo'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { createColumnHelper, useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, ColumnFiltersState, getFacetedUniqueValues, getFilteredRowModel, SortingState, getSortedRowModel } from '@tanstack/react-table';
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -127,6 +127,17 @@ export default function TicketTabel({ data }: Props) {
 
     console.log('table data:', data, Array.isArray(data));
 
+    useEffect(() => {
+        const currentPageIndex = table.getState().pagination.pageIndex
+        const pageCount = table.getPageCount()
+
+        if (pageCount <= currentPageIndex && currentPageIndex > 0) {
+            const params = new URLSearchParams(searchParams.toString())
+            params.set('page', '1')
+            router.replace(`?${params.toString()}`, { scroll: false })
+        }
+    }, [table.getState().columnFilters]) //eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <div className="overflow-hidden rounded-md border mt-6">
             <Table className='border'>
@@ -183,7 +194,7 @@ export default function TicketTabel({ data }: Props) {
             <div className="flex justify-between items-center">
                 <div className="flex basis-1/3 items-center">
                     <p className='whitespace-nowrap font-bold'>
-                        {`Page ${table.getState().pagination.pageIndex + 1} of ${table.getPageCount()}`}  {`[${table.getFilteredRowModel().rows.length} ${table.getFilteredRowModel().rows.length !== 1 ? 'total results' : 'results'}]`}
+                        {`Page ${table.getState().pagination.pageIndex + 1} of ${Math.max(1, table.getPageCount())}`}  {`[${table.getFilteredRowModel().rows.length} ${table.getFilteredRowModel().rows.length !== 1 ? 'total results' : 'results'}]`}
                     </p>
                 </div>
                 <div className="space-x-1">

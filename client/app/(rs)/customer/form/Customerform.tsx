@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import TextAreaWithLabel from '@/components/inputs/textAreaWithLabel';
 import { SelectWithLabel } from '@/components/inputs/selectWithLabel';
 import { countryArray } from '@/app/constants/CityArray';
-import { useUser } from '@clerk/nextjs';
 import CheckboxWithLabel from '@/components/inputs/checkboxWithLabel';
 import { saveCustomerAction } from '@/app/actions/saveCustomerAction';
 import { useAction } from "next-safe-action/hooks";
@@ -17,8 +16,6 @@ import { toast } from 'sonner';
 import { LoaderCircle } from 'lucide-react';
 import { DisplayServerActionResponse } from '@/app/components/displayServerActionResponse';
 import { useSearchParams } from 'next/navigation';
-
-
 
 type Props = {
   customer?: customerSelectSchemaType,
@@ -75,50 +72,23 @@ export default function Customerform(
 
   const { execute, result, isExecuting, reset } = useAction(saveCustomerAction, {
     onSuccess: ({ data }) => {
-      //toast user 
       toast.success(data?.message || 'information saved successfully', {
         description: 'Success',
         duration: 5000,
       })
-
-      // Reset form to empty if it's a new customer (id is 0)
-      // Delay reset to allow DisplayServerActionResponse to be visible for 5 seconds
-      setTimeout(() => {
-        if (!customer?.id || customer.id === 0) {
-          form.reset({
-            id: 0,
-            first_name: '',
-            last_name: '',
-            address1: '',
-            address2: '',
-            city: '',
-            zip: '',
-            email: '',
-            phone: '',
-            notes: '',
-            active: true
-          })
-        }
-        // Reset the action result after message has been displayed
-        reset()
-      }, 5000)
     },
     onError: ({ error }) => {
-      //toast user 
       toast.error('Save failed', {
         description: error?.serverError || 'An error occurred',
         duration: 5000,
       })
     },
-
   }
   );
-
 
   async function onSubmit(data: customerInsertSchemaType) {
     execute(data);
   }
-
 
   return (
     <div className='pt-10 w-[80%] mx-auto'>
@@ -132,11 +102,9 @@ export default function Customerform(
             You are logged in as a manager
           </p>
         )}
-
       </div>
 
       <Form {...form}>
-
         <form onSubmit={form.handleSubmit(onSubmit)} className='flex gap-10 p-4'>
           <div className='flex flex-col gap-4 w-full max-w-xs'>
             <InputWithLabel<customerInsertSchemaType> fieldTitle='First Name' nameInSchema='first_name' />
@@ -154,7 +122,6 @@ export default function Customerform(
             {isManager && customer?.id ? (
               <CheckboxWithLabel<customerInsertSchemaType> fieldTitle='Active' nameInSchema={'active'} message='Yes' />
             ) : null}
-
             <div className='flex gap-2'>
               <Button className='w-3/4' variant={'outline'} title='save' type='submit' disabled={isExecuting}>{isExecuting ? (
                 <><LoaderCircle className='animate-spin' />Saving</>
