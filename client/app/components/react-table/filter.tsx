@@ -13,7 +13,7 @@ export default function Filter<T>({ column, filteredRows }: Props<T>) {
     const sortedUniqueValues = Array.from(uniqueFilteredValues).sort()
 
     return (
-        <>
+        <div className='mb-2'>
         <datalist id={column.id + 'list'}>
             {sortedUniqueValues.map((value, index) => (
                 <option key={`${index}-${column.id}`} value={value}/>
@@ -27,6 +27,6 @@ export default function Filter<T>({ column, filteredRows }: Props<T>) {
             className="w-full border shadow rounded bg-card"
             list={column.id + 'list'}
         />
-        </>
+        </div>
     )
 }

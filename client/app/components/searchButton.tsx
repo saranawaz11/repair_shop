@@ -8,13 +8,11 @@ function SearchButton() {
     const status = useFormStatus();
 
   return (
-    <div>
-      <Button disabled={status.pending} type='submit' className='w-25'>
+    <Button disabled={status.pending} type='submit' className='w-25' variant={'default'}>
             {status.pending ? (
                 <LoaderCircle className='animate-spin'/>
             ) : 'Search'}
-        </Button>
-    </div>
+    </Button>
   )
 }
 

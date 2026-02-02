@@ -20,7 +20,7 @@ export const MessageBox = (
 export const DisplayServerActionResponse = ({result} : Props) => {
     const {data, serverError, validationError} = result
     return(
-        <div>
+        <div className='my-0'>
             {data?.message && (
                 <MessageBox type="success" content={`Success: ${data.message}`}/>
             )}

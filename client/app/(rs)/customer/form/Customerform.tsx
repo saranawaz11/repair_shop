@@ -91,7 +91,7 @@ export default function Customerform(
   }
 
   return (
-    <div className='pt-10 w-[80%] mx-auto'>
+    <div className='mb-10 w-[80%] mx-auto'>
       <DisplayServerActionResponse result={result} />
       <div className='text-start'>
         <h2 className='text-2xl font-bold'>
@@ -126,7 +126,7 @@ export default function Customerform(
               <Button className='w-3/4' variant={'outline'} title='save' type='submit' disabled={isExecuting}>{isExecuting ? (
                 <><LoaderCircle className='animate-spin' />Saving</>
               ) : 'Save'}</Button>
-              <Button variant={'outline'} title='Reset' type='button' onClick={() => {
+              <Button variant={'default'} title='Reset' type='button' onClick={() => {
                 form.reset(defaultValues)
                 reset()
               }}>Reset</Button>

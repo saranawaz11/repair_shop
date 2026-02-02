@@ -51,10 +51,11 @@ function TicketForm(
     const { execute, result, isExecuting, reset } = useAction(saveTicketAction, {
         onSuccess: ({ data }) => {
             //toast user 
-            toast.success(data?.message || 'information saved successfully', {
+            toast.success(data?.message || 'Information saved successfully', {
                 description: 'Success',
                 duration: 5000,
-            })
+            });
+
 
             // Reset form to empty if it's a new customer (id is 0)
             // Delay reset to allow DisplayServerActionResponse to be visible for 5 seconds
@@ -97,10 +98,11 @@ function TicketForm(
 
 
     return (
-        <div className='pt-10 w-[80%] mx-auto'>
+        <div className='w-[80%] mx-auto mb-10'>
             <DisplayServerActionResponse result={result} />
             <div>
-                <h2>{ticket?.id && isEditable ? `Edit ticket #${ticket.id}` : ticket?.id ? `View ticket #${ticket.id}` : 'New Ticket Form'} Ticket {ticket?.id ? `# ${ticket.id}` : 'Form'}</h2>
+
+                <h2 className='text-2xl font-bold'>{ticket?.id && isEditable ? `Edit` : ticket?.id ? `View` : 'New'} Ticket {ticket?.id ? `# ${ticket.id}` : 'Form'}</h2>
             </div>
             <Form {...form}>
 
@@ -116,7 +118,6 @@ function TicketForm(
                         {ticket?.id ? (
                             <CheckboxWithLabel<ticketInsertSchemaType> fieldTitle="Completed" nameInSchema="completed" message="Yes" disabled={!isEditable} />
                         ) : null}
-                        <CheckboxWithLabel nameInSchema={'completed'} fieldTitle="Completed" message="Yes" />
                         <div>
                             <h2>Customer Info</h2>
                             <hr />
@@ -130,7 +131,7 @@ function TicketForm(
                     </div>
 
                     <div className="flex flex-col gap-4 w-full max-w-xs">
-                        <TextAreaWithLabel fieldTitle="Description" nameInSchema={'description'} className="h-96" disabled={!isEditable} />
+                        <TextAreaWithLabel fieldTitle="Description" nameInSchema={'description'} className="h-76" disabled={!isEditable} />
                         {isEditable && (
                             <div className='flex gap-2'>
                                 <Button
@@ -150,7 +151,7 @@ function TicketForm(
                                 </Button>
 
                                 <Button
-                                    variant='outline'
+                                    variant='destructive'
                                     type='button'
                                     onClick={() => {
                                         form.reset(defaultValues)

@@ -139,11 +139,11 @@ export default function TicketTabel({ data }: Props) {
     }, [table.getState().columnFilters]) //eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <div className="overflow-hidden rounded-md border mt-6">
+        <div className="overflow-hidden rounded-md w-[90%] mx-auto mt-5">
             <Table className='border'>
-                <TableHeader>
+                <TableHeader className=''>
                     {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id}>
+                        <TableRow key={headerGroup.id} >
                             {headerGroup.headers.map((header) => {
                                 return (
                                     <TableHead key={header.id} className='bg-secondary' style={{ width: header.getSize() }}>
@@ -191,44 +191,48 @@ export default function TicketTabel({ data }: Props) {
                     )}
                 </TableBody>
             </Table>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between flex-col gap-4 items-center my-4">
                 <div className="flex basis-1/3 items-center">
                     <p className='whitespace-nowrap font-bold'>
                         {`Page ${table.getState().pagination.pageIndex + 1} of ${Math.max(1, table.getPageCount())}`}  {`[${table.getFilteredRowModel().rows.length} ${table.getFilteredRowModel().rows.length !== 1 ? 'total results' : 'results'}]`}
                     </p>
                 </div>
-                <div className="space-x-1">
-                    <Button variant={'outline'} onClick={() => router.refresh()}>
-                        Reset Data
-                    </Button>
-                    <Button variant={'outline'} onClick={() => table.resetSorting()}>
-                        Reset Sorting
-                    </Button>
-                    <Button variant={'outline'} onClick={() => table.resetColumnFilters()}>
-                        Reset Filters
-                    </Button>
-                    <Button variant={'outline'}
-                        onClick={() => {
-                            const newIndex = table.getState().pagination.pageIndex - 1
-                            table.setPageIndex(newIndex)
-                            const params = new URLSearchParams(searchParams.toString())
-                            params.set('page', (newIndex + 1).toString())
-                            router.replace(`?${params.toString()}`, { scroll: false })
-                        }}
-                        disabled={!table.getCanPreviousPage()}>
-                        Previous
-                    </Button>
-                    <Button variant={'outline'}
-                        onClick={() => {
-                            const newIndex = table.getState().pagination.pageIndex + 1
-                            table.setPageIndex(newIndex)
-                            const params = new URLSearchParams(searchParams.toString())
-                            params.set('page', (newIndex + 1).toString())
-                            router.replace(`?${params.toString()}`, { scroll: false })
-                        }}
-                        disabled={!table.getCanNextPage()}>
-                        Next
-                    </Button>
+                <div className="space-x-1 flex flex-col md:flex-row  gap-4">
+                    <div className='flex gap-2'>
+                        <Button variant={'outline'} onClick={() => router.refresh()}>
+                            Reset Data
+                        </Button>
+                        <Button variant={'outline'} onClick={() => table.resetSorting()}>
+                            Reset Sorting
+                        </Button>
+                        <Button variant={'outline'} onClick={() => table.resetColumnFilters()}>
+                            Reset Filters
+                        </Button>
+                    </div>
+                    <div className='flex gap-2 justify-center '>
+                        <Button variant={'outline'}
+                            onClick={() => {
+                                const newIndex = table.getState().pagination.pageIndex - 1
+                                table.setPageIndex(newIndex)
+                                const params = new URLSearchParams(searchParams.toString())
+                                params.set('page', (newIndex + 1).toString())
+                                router.replace(`?${params.toString()}`, { scroll: false })
+                            }}
+                            disabled={!table.getCanPreviousPage()}>
+                            Previous
+                        </Button>
+                        <Button variant={'outline'}
+                            onClick={() => {
+                                const newIndex = table.getState().pagination.pageIndex + 1
+                                table.setPageIndex(newIndex)
+                                const params = new URLSearchParams(searchParams.toString())
+                                params.set('page', (newIndex + 1).toString())
+                                router.replace(`?${params.toString()}`, { scroll: false })
+                            }}
+                            disabled={!table.getCanNextPage()}>
+                            Next
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>

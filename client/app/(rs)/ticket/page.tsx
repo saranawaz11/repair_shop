@@ -30,7 +30,7 @@ export default async function TicketPage(
   const result = await getTicketSeaarchResult(searchText);
 
   return (
-    <div>
+    <div className=''>
       <TicketSearch />
       {/* <p>{JSON.stringify(result)}</p> */}
       <TicketTabel data={result} />

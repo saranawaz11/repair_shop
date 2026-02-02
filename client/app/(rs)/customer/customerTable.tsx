@@ -31,7 +31,7 @@ export default function CustomerTable({ data }: Props) {
         return (
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button className='h-8 2-8 p-0' variant={'ghost'}>
+                    <Button className='h-8 w-8 rounded-full p-0 cursor-pointer' variant={'ghost'}>
                         <span className='sr-only'>Open menu</span>
                         <MoreHorizontal className='h-4 w-4' />
                     </Button>
@@ -79,7 +79,7 @@ export default function CustomerTable({ data }: Props) {
     console.log('table data:', data, Array.isArray(data));
 
     return (
-        <div className="overflow-hidden rounded-md border mt-6">
+        <div className="overflow-hidden rounded-md w-[90%] mx-auto my-5">
             <Table className='border'>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (

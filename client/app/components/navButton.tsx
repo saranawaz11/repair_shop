@@ -11,7 +11,12 @@ type NavButtonProps = {
 
 function NavButton({ label, href, icon: Icon }: NavButtonProps) {
     return (
-        <Button variant='ghost' asChild aria-label={label} className='rounded-lg block border text-2xl hover:bg-black/10 dark:hover:bg-white/10 border-transparent'>
+        <Button
+            variant='ghost'
+            asChild
+            aria-label={label}
+            className='rounded-lg block text-2xl'
+        >
             {
                 href ? (
                     <Link href={href}>
