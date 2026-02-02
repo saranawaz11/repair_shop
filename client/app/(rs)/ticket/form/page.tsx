@@ -1,7 +1,6 @@
 import BackButton from '@/app/components/backButton';
 import { getCustomer } from '@/lib/queries/getCustomer';
 import { getTicket } from '@/lib/queries/getTicket';
-import React from 'react'
 import TicketForm from './TicketForm';
 import { clerkClient, currentUser } from '@clerk/nextjs/server';
 
@@ -15,8 +14,6 @@ async function page(
     try {
         const user = await currentUser()
         const isManager = user?.publicMetadata?.role === 'manager'
-
-
         const { ticketId, customerId } = await searchParams;
 
         if (!ticketId && !customerId) {

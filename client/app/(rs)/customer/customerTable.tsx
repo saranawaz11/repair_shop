@@ -1,9 +1,7 @@
 'use client'
 'use no memo'
-import React, { useMemo } from 'react'
 import { createColumnHelper, useReactTable, getCoreRowModel, flexRender, CellContext } from '@tanstack/react-table';
 import { customerSelectSchemaType } from '@/app/zod-schemas/customer'
-import { useRouter } from 'next/navigation'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
@@ -16,7 +14,6 @@ type Props = {
 
 
 export default function CustomerTable({ data }: Props) {
-    const router = useRouter();
     const columnHeadersArray: Array<keyof customerSelectSchemaType> = [
         'first_name',
         'last_name',

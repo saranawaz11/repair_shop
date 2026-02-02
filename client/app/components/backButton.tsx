@@ -11,7 +11,6 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
     variant?: 'ghost' | 'default' | 'outline'
 } 
 
-
 function BackButton(
     {title, variant, className, ...props} : Props
 ) {

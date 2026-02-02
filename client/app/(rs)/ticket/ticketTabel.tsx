@@ -124,9 +124,6 @@ export default function TicketTabel({ data }: Props) {
         getSortedRowModel: getSortedRowModel(),
     });
 
-
-    console.log('table data:', data, Array.isArray(data));
-
     useEffect(() => {
         const currentPageIndex = table.getState().pagination.pageIndex
         const pageCount = table.getPageCount()

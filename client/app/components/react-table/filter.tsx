@@ -9,7 +9,6 @@ type Props<T> = {
 export default function Filter<T>({ column, filteredRows }: Props<T>) {
     const columnFilterValue = column.getFilterValue();
     const uniqueFilteredValues = new Set(filteredRows)
-    // const sortedUniqueValues = Array.from(column.getFacetedUniqueValues().keys()).sort();
     const sortedUniqueValues = Array.from(uniqueFilteredValues).sort()
 
     return (

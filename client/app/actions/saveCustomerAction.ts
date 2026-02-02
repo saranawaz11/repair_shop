@@ -4,7 +4,7 @@ import { actionClient } from "@/lib/safe-action";
 import { customerInsertSchema, type customerInsertSchemaType} from "@/app/zod-schemas/customer";
 import db from "@/app/db";
 import { customers } from "@/app/db/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { flattenValidationErrors } from "next-safe-action";
 import { auth } from "@clerk/nextjs/server";
 

@@ -33,7 +33,7 @@ export const actionClient = createSafeActionClient({
         if (e.constructor.name === 'DrizzleQueryError') {
             return 'Database eroor. data is not saved.'
         }
-        return e.message;
+        return DEFAULT_SERVER_ERROR_MESSAGE;
         // return e.message;
     },
 });

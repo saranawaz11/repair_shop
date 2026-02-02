@@ -1,13 +1,5 @@
-// Have to keep it server component
-
-
-// get customer id through searchparams
-// then get customer all data from query of getCustomer
-// use id from searchparams to match with id to id got from getCustomer
-
 import BackButton from '@/app/components/backButton';
 import { getCustomer } from '@/lib/queries/getCustomer';
-import React from 'react'
 import Customerform from './Customerform';
 import { currentUser } from '@clerk/nextjs/server';
 
@@ -16,9 +8,7 @@ export async function generateMetadata(
         searchParams,
     }: {
         searchParams: Promise<{ [key: string]: string | undefined }>
-    }) {
-
-
+        }) {
     const { customerId } = await searchParams
     if (!customerId) return { title: 'New Customer' }
     return { title: 'Edit Customer' }
@@ -35,26 +25,21 @@ export default async function page(
         const { customerId } = await searchParams;
         const user = await currentUser()
         const isManager = user?.publicMetadata?.role === 'manager'
-        console.log( `customer id is:- ${customerId}` );
 
-        if(customerId){
+        if (customerId) {
             const customer = await getCustomer(parseInt(customerId))
-            console.log('Customer is: \n', customer);
-            
 
-            if(!customer){
-                return(
+            if (!customer) {
+                return (
                     <div>
                         <h2>Customer not found</h2>
-                        <BackButton title='Return to previous page' variant='ghost'/>
+                        <BackButton title='Return to previous page' variant='ghost' />
                     </div>
                 )
             }
 
-            // if customer details present
             return <Customerform key={customerId} isManager={isManager} customer={customer} />
-        } 
-        // if not customerId, then new form
+        }
         return <Customerform key='new' isManager={isManager} />
 
     } catch (e) {
@@ -62,7 +47,4 @@ export default async function page(
             throw e;
         }
     }
-    return (
-        <div>page</div>
-    )
 }

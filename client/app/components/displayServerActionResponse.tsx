@@ -13,7 +13,7 @@ export const MessageBox = (
 ) => {
     return ( 
         <div className={`bg-accent px-4 py-2 my-2 rounded-lg ${type === 'error' ? 'text-red-500' : ''}`}>
-            {type === 'success' ? 'success' : 'error'} {content}
+            {type === 'success' ? '✨' : '⚠️'} {content}
         </div>
     );
 }

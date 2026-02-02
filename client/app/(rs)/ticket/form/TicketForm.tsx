@@ -1,22 +1,19 @@
 'use client'
-import { customerInsertSchema, type customerSelectSchemaType } from "@/app/zod-schemas/customer"
+import { type customerSelectSchemaType } from "@/app/zod-schemas/customer"
 import { ticketInsertSchema, type ticketInsertSchemaType } from "@/app/zod-schemas/ticket"
 import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod"
-import React from 'react'
 import { Form } from "@/components/ui/form";
 import InputWithLabel from "@/components/inputs/inputWithLabel";
 import CheckboxWithLabel from "@/components/inputs/checkboxWithLabel";
 import TextAreaWithLabel from "@/components/inputs/textAreaWithLabel";
 import { Button } from "@/components/ui/button";
-import { currentUser } from "@clerk/nextjs/server";
 import { SelectWithLabel } from "@/components/inputs/selectWithLabel";
 import { useAction } from "next-safe-action/hooks";
 import { saveTicketAction } from "@/app/actions/saveTicketAction";
 import { toast } from "sonner";
 import { LoaderCircle } from "lucide-react";
 import { DisplayServerActionResponse } from "@/app/components/displayServerActionResponse";
-
 
 type Props = {
     customer: customerSelectSchemaType,
@@ -33,7 +30,6 @@ function TicketForm(
     { customer, ticket, techs, isEditable = true, isManager = false }: Props
 ) {
 
-    // const isManager = Array.isArray(techs)
     const defaultValues: ticketInsertSchemaType = {
         id: ticket?.id ?? "(New)",
         customerId: ticket?.customerId ?? customer.id,
@@ -50,34 +46,10 @@ function TicketForm(
 
     const { execute, result, isExecuting, reset } = useAction(saveTicketAction, {
         onSuccess: ({ data }) => {
-            //toast user 
             toast.success(data?.message || 'Information saved successfully', {
                 description: 'Success',
                 duration: 5000,
             });
-
-
-            // Reset form to empty if it's a new customer (id is 0)
-            // Delay reset to allow DisplayServerActionResponse to be visible for 5 seconds
-            // setTimeout(() => {
-            //     if (!customer?.id || customer.id === 0) {
-            //         form.reset({
-            //             id: 0,
-            //             first_name: '',
-            //             last_name: '',
-            //             address1: '',
-            //             address2: '',
-            //             city: '',
-            //             zip: '',
-            //             email: '',
-            //             phone: '',
-            //             notes: '',
-            //             active: true
-            //         })
-            //     }
-            //     // Reset the action result after message has been displayed
-            //     reset()
-            // }, 5000)
         },
         onError: ({ error }) => {
             //toast user 
@@ -86,14 +58,11 @@ function TicketForm(
                 duration: 5000,
             })
         },
-
     }
     );
 
     async function onSubmit(data: ticketInsertSchemaType) {
-        // console.log(data);
         execute(data);
-
     }
 
 
@@ -101,11 +70,9 @@ function TicketForm(
         <div className='w-[80%] mx-auto mb-10'>
             <DisplayServerActionResponse result={result} />
             <div>
-
                 <h2 className='text-2xl font-bold'>{ticket?.id && isEditable ? `Edit` : ticket?.id ? `View` : 'New'} Ticket {ticket?.id ? `# ${ticket.id}` : 'Form'}</h2>
             </div>
             <Form {...form}>
-
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-10 p-4'">
                     <div className='flex flex-col gap-4 w-full max-w-xs'>
                         <InputWithLabel<ticketInsertSchemaType> fieldTitle='Title' nameInSchema='title' />
@@ -149,7 +116,6 @@ function TicketForm(
                                         'Save'
                                     )}
                                 </Button>
-
                                 <Button
                                     variant='destructive'
                                     type='button'
